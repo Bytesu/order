@@ -1,7 +1,7 @@
 /**
  * Created by byte on 2016/3/3.
  */
-var demoData = [
+var demo_data = [
     'ITEM000001',
     'ITEM000001',
     'ITEM000001',
@@ -10,33 +10,33 @@ var demoData = [
     'ITEM000005',
     'ITEM000005'
 ];
+
 var shopping_data = {
     "ITEM000001": {
-        "name": "可口可乐",
+    "name": "可口可乐",
         "price": 3.00,
         "unit":"瓶",
         "category":"A" //类别
-    },
+},
     "ITEM000003": {
-        "name": "羽毛球",
+    "name": "羽毛球",
         "price": 1.00,
         "unit":"个",
         "category":"B"
-    },
+},
     "ITEM000005": {
-        "name": "苹果",
+    "name": "苹果",
         "price": 5.50,
         "unit":"斤",
         "category":"C"
-    }
-};
-//TODO:  订单模块
+}
+}
 /**
- *
+ * 订单模块
  * @param barcode_arr_95 : barcode array for discount of 95
  * @param barcode_arr_two_with_one_fee : barcode array for buying two with one fee
- * @param barcode_shopping :
-    * @constructor
+ * @param barcode_shopping
+ * @constructor
  */
 function Order(barcode_arr_95, barcode_arr_two_with_one_fee, barcode_shopping) {
     this.unit = '(元)';
@@ -54,23 +54,15 @@ function Order(barcode_arr_95, barcode_arr_two_with_one_fee, barcode_shopping) {
         var item_arr = item.split('-');
         var trans_item = shopping_data[item_arr[0]];
         var _num = 0;
-        //if (item_arr.length > 1) {
-        //    _num = parseInt(item_arr[1]);
-        //} else if(item_arr.length==1) {
-        //    _num = 1;
-        //}
+
         _num = item_arr.length > 1?parseInt(item_arr[1]):1;
         trans_item.barcode = item_arr[0];
 
         new_barcode_shopping[trans_item.barcode] && (_num += new_barcode_shopping[trans_item.barcode].num);
         trans_item.num = _num;
-        //console.log(trans_item.num)
         new_barcode_shopping[trans_item.barcode] = trans_item;
 
-
-
     });
-    //console.log(JSON.stringify(new_barcode_shopping));
     this.console(new_barcode_shopping)
 }
 Order.prototype.console = function (shoppings) {
@@ -82,7 +74,6 @@ Order.prototype.console = function (shoppings) {
 
         item = shoppings[item];
         item = that.discount(item);
-        //console.log(item)
         var desc = '名称：' + item.name + ' 数量：' + item.num +item.unit+' 单价：' + item.price + that.unit+' 小计：' + item.total+ that.unit;
         if (item.type == '95') {
             desc += ' 节省:' + that._parseFloat(item.save)+that.unit;
@@ -135,5 +126,5 @@ Order.prototype.discount = function (item) {
 };
 
 
-new Order(['ITEM000005','ITEM000001'], ['ITEM000001',"ITEM000003"], demoData);
+new Order(['ITEM000005','ITEM000001'], ['ITEM000001',"ITEM000003"], demo_data);
 //
